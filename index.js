@@ -38,7 +38,7 @@ const runner = async () => {
                 message: "Please provide test instructions if applicable"
               },
               {
-                type: "checkbox",
+                type: "list",
                 message: "License?",
                 name: "license",
                 choices: [
@@ -57,8 +57,49 @@ const runner = async () => {
                 message: "Enter your github username"
               }
         ]);
+let badge = ""
+if (userInput.license == "[MIT License](LICENSE.txt)") {
+  badge = "[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)"
+}
+else if (userInput.license == "[GNU GPLv3 License](COPYING.txt)") {
+  badge = "[![License: LGPL v3](https://img.shields.io/badge/License-LGPL_v3-blue.svg)]"
+}
 
-        fs.writeFileSync(`${userInput.project_title}.json`, JSON.stringify(userInput))
+var template = `
+${badge}
+
+# Title: ${userInput.project_title}
+
+## Description:
+${userInput.description}
+
+## Table of Contents
+- [Installation](#installation)
+- [Usage](#usage)
+- [Contribution](#contribution)
+- [test](#test)
+- [license](#license)
+- [question](#questions)
+
+## Installation: 
+${userInput.install}
+
+## Usage:
+${userInput.use}
+
+## Contribution: 
+${userInput.contributions} 
+
+## Test:
+${userInput.test}
+## License: 
+${userInput.license}
+## Questions 
+${userInput.email}
+
+Github:
+${userInput.github}`
+        fs.writeFileSync(`README.md`, template)
         console.log(`README file information saved to the folder..`)        
 
     } catch (err) {
